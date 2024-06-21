@@ -10,11 +10,16 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class menuController implements Initializable{
@@ -92,12 +97,25 @@ public class menuController implements Initializable{
 		   ButtonAnimation.play();
 	}
 
-
+	@FXML
 	public void startSinglePlayer(){
 		animateBg.stop();
 	}
-	public void startMultiPlayer() {
+	@FXML
+	public void startMultiPlayer(MouseEvent event) {
 		animateBg.stop();
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("resources/CreateJoinLobby.fxml"));
+			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	public void OnButtonEntered(MouseEvent e) {
 		Button b = (Button)e.getSource();
@@ -110,5 +128,6 @@ public class menuController implements Initializable{
 		b.setStyle("-fx-border-radius: 50; -fx-border-width: 7;-fx-background-radius: 50; -fx-background-color:#00DD00 ; -fx-border-color:#008800 ;");
 		singleplayerButtonAnimation.play();
 		multiPlayerButtonAnimation.play();
+		animateBg.play();
     }
 }

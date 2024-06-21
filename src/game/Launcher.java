@@ -18,9 +18,11 @@ public void start(Stage stage) throws Exception {
 	// TODO Auto-generated method stub
 	Parent root = new BorderPane();
 	try {
-		FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("mainMenu.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/mainMenu.fxml"));
 		root = loader.load();
-	}catch (Exception e) {e.printStackTrace();}
+	}catch (Exception e) {
+		e.printStackTrace();
+	}
 	stage.setScene(new Scene(root));
 	stage.setHeight(780);
 	stage.setWidth(1360);
