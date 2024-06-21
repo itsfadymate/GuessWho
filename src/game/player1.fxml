@@ -23,7 +23,7 @@
                   <Image url="@images/cardsBg.png" />
                </image>
             </ImageView>
-            <GridPane alignment="CENTER" gridLinesVisible="true" prefHeight="400.0" prefWidth="440.0">
+            <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" prefHeight="400.0" prefWidth="440.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -114,23 +114,28 @@
                   </ImageView>
                </children>
             </GridPane>
+            <ImageView fx:id="pickedCard" fitHeight="388.0" fitWidth="330.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@images/card7.png" />
+               </image>
+            </ImageView>
          </children>
       </StackPane>
       <VBox prefHeight="780.0" prefWidth="596.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="227.0" prefWidth="595.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#makeAGuess" prefHeight="55.0" prefWidth="170.0" style="-fx-background-color: #00EE00; -fx-background-radius: 40;" text="Make a guess">
+                  <Button mnemonicParsing="false" onAction="#makeAGuess" prefHeight="75.0" prefWidth="170.0" style="-fx-background-color: #00EE00; -fx-background-radius: 40;" text="Make a guess">
                      <font>
                         <Font name="Comic Sans MS Bold" size="20.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#showRules" prefHeight="55.0" prefWidth="170.0" style="-fx-background-color: #E0EE00; -fx-background-radius: 40;" text="Help">
+                  <Button mnemonicParsing="false" onAction="#showPickedCard" prefHeight="75.0" prefWidth="170.0" style="-fx-background-color: #E0EE00; -fx-background-radius: 40;" text="Show picked card" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="Comic Sans MS Bold" size="20.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#leaveGame" prefHeight="55.0" prefWidth="170.0" style="-fx-background-color: #FF0000; -fx-background-radius: 40;" text="Leave ">
+                  <Button mnemonicParsing="false" onAction="#leaveGame" prefHeight="75.0" prefWidth="170.0" style="-fx-background-color: #FF0000; -fx-background-radius: 40;" text="Leave ">
                      <font>
                         <Font name="Comic Sans MS Bold" size="20.0" />
                      </font>
