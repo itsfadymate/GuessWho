@@ -10,6 +10,8 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class Player1 {
@@ -17,6 +19,7 @@ public class Player1 {
 	private ServerSocket serverSocket;
 	private BufferedWriter writer;
 	private BufferedReader reader;
+	private int foePickedCardValue;
 	public Player1(ServerSocket serverSocket) {
 		// TODO Auto-generated constructor stub
 		try {
@@ -46,9 +49,14 @@ public class Player1 {
 
 	public void listenForIncomingMessages(VBox vbox) {
 		new Thread(()->{
+			
 			while (socket.isConnected()) {
 				try {
-					Player1Controller.addMessage(reader.readLine(), vbox, false);
+					String msg = reader.readLine();
+				    if (msg.charAt(0)=='T') 
+				    	this.foePickedCardValue = Integer.parseInt(msg.substring(10));
+				    else
+				    	Player1Controller.addMessage(msg.substring(1), vbox,false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -58,7 +66,8 @@ public class Player1 {
 
 	}
 
-	public void sendMsg(String text) {
+	public void sendMsg(String text,boolean containsPickedCardInfo) {
+		text = containsPickedCardInfo? "T"+ text : "F"+text;
 		try {
 			writer.write(text);
 			writer.newLine();
@@ -69,5 +78,7 @@ public class Player1 {
 		}
 
 	}
-
+	public int getFoePickedCardValue() {
+		return this.foePickedCardValue;
+	}
 }
