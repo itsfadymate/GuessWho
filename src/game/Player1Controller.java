@@ -94,9 +94,9 @@ public class Player1Controller implements Initializable {
 		}
 
 		msgVBox.setSpacing(20);
-		msgVBox.heightProperty().addListener((a,b,newBoxHeight)->{
+	/*	msgVBox.heightProperty().addListener((a,b,newBoxHeight)->{
 			scrollPane.setVvalue((Double)newBoxHeight);
-		});
+		});*/
 		p1.listenForIncomingMessages(msgVBox);
 		pickCard();
 		

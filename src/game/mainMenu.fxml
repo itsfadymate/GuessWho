@@ -16,19 +16,19 @@
             <Rectangle2D height="400.0" width="700.0" />
          </viewport>
          <image>
-            <Image url="@../images/guesWhoBg2.png" />
+            <Image url="@images/guesWhoBg2.png" />
          </image>
       </ImageView>
       <BorderPane layoutX="-3.0" layoutY="1.0" prefHeight="782.0" prefWidth="1366.0">
          <center>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="400.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="singlePlayerButton" mnemonicParsing="false" onMouseClicked="#startSinglePlayer" onMouseEntered="#OnButtonEntered" onMouseExited="#OnButtonExited" prefHeight="60.0" prefWidth="180.0" style="-fx-background-color: #00DD00; -fx-background-radius: 50; -fx-border-color: #008800; -fx-border-radius: 50; -fx-border-width: 7;" text="singleplayer" textFill="#fbfff6">
+                  <Button fx:id="singlePlayerButton" mnemonicParsing="false" onAction="#startSinglePlayer" onMouseEntered="#OnButtonEntered" onMouseExited="#OnButtonExited" prefHeight="60.0" prefWidth="180.0" style="-fx-background-color: #00DD00; -fx-background-radius: 50; -fx-border-color: #008800; -fx-border-radius: 50; -fx-border-width: 7;" text="singleplayer" textFill="#fbfff6">
                      <font>
                         <Font name="Comic Sans MS" size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="multiPlayerButton" mnemonicParsing="false" onMouseClicked="#startMultiPlayer" onMouseEntered="#OnButtonEntered" onMouseExited="#OnButtonExited" prefHeight="65.0" prefWidth="179.0" style="-fx-background-color: #00DD00; -fx-background-radius: 50; -fx-border-color: #008800; -fx-border-radius: 50; -fx-border-width: 7;" text="Multiplayer" textFill="#fbfff6">
+                  <Button fx:id="multiPlayerButton" mnemonicParsing="false" onAction="#startMultiPlayer" onMouseEntered="#OnButtonEntered" onMouseExited="#OnButtonExited" prefHeight="65.0" prefWidth="179.0" style="-fx-background-color: #00DD00; -fx-background-radius: 50; -fx-border-color: #008800; -fx-border-radius: 50; -fx-border-width: 7;" text="Multiplayer" textFill="#fbfff6">
                      <font>
                         <Font name="Comic Sans MS" size="22.0" />
                      </font>
