@@ -2,19 +2,33 @@ package game;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Tester extends Application {
 
-
+	boolean ready = false;
 
 	@Override
 	public void start(Stage s) throws Exception {
 		// TODO Auto-generated method stub
-		s.setScene(new Scene(new LobbyPage()));
+		try{
+			 ready = true;
+		LobbyPage root = new LobbyPage();
+		root.addPlayerToList("Fady");
+		root.addPlayerToList("Daniel");
+		root.setOnReadyClicked(e->{root.setPlayerReady("Fady", ready);
+		this.ready = !ready;
+		});
+		
+		s.setScene(new Scene(root));
 		s.setHeight(780);
 		s.setWidth(1360);
 		s.show();
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public static void main(String[] args) {
