@@ -100,13 +100,13 @@ public class menuController implements Initializable{
 	public void startSinglePlayer(){
 		animateBg.stop();
 	}
-	public void startMultiPlayer() {
+	public void startMultiPlayer(ActionEvent event) {
 		animateBg.stop();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("CreateJoinLobby.fxml"));
-			//Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 			Scene scene = new Scene(root);
-			//stage.setScene(scene);
+			stage.setScene(scene);
 			//stage.show();
 		}
 		catch(Exception e)
