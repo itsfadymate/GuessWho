@@ -71,14 +71,16 @@ public class PlayerController {
 	@FXML 
 	GridPane gridPane;
 
-	Player p1;
-	ImageView[] cards;
-	Image[] displayImages;//contains images currently displayed
-	Image[] flipImages;//contains images to be displayed when an Image is clicked
+	private Player p1;
+	private ImageView[] cards;
+	private Image[] displayImages;//contains images currently displayed
+	private Image[] flipImages;//contains images to be displayed when an Image is clicked
 	private final int maximumTries = 3;
 	private int numberOfGuesses;
-	
+	private boolean isGuessing;
+	private ScaleTransition[] transitions;
 	public void initialize(Socket socket) {
+		this.isGuessing = false;
 		this.cards = new ImageView[]
 				{card1,card2,card3,card4,card5,
 						card6,card7,card8,card9,card10,
@@ -184,12 +186,21 @@ public class PlayerController {
 			transition[i].setByZ(-0.3);
 			transition[i].setAutoReverse(true);
 			transition[i].setCycleCount(Timeline.INDEFINITE);
+			transition[i].play();
 		}
 		return transition;
 	}
 	public void makeAGuess() {
-		ScaleTransition[] transition = animateCards();
-		setGuessOnClick(transition);
+		this.isGuessing=!this.isGuessing;
+		if (isGuessing) {
+			if (transitions!=null)
+				Arrays.stream(transitions).forEach(transition->transition.stop());
+			Arrays.stream(cards).forEach(c-> {c.setScaleX(1);c.setScaleY(1);c.setScaleZ(1);});
+			setFlipOnClick();
+		}else {
+			 transitions = animateCards();
+			setGuessOnClick(transitions);
+		}
 	}
 
 	private static boolean showingPickedCard = false;

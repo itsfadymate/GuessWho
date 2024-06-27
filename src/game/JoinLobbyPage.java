@@ -46,13 +46,13 @@ public class JoinLobbyPage extends BorderPane {
 		s2.prefWidth(240);
 		this.setLeft(s1);
 		this.setRight(s2);
-		Label nameLabel = createLabel("Name: ");
-		Name = createTextField("Name");
+		Label nameLabel = createLabel("Nickname: ");
+		Name = createTextField("Nickname");
 		VBox nameBox = new VBox(nameLabel,Name);
 		nameBox.setMaxWidth(350);
 
-		Label ipAddressLabel = createLabel("IP Address: ");
-		TextField IPAddress = createTextField("IP Address");
+		Label ipAddressLabel = createLabel("Host IP Address: ");
+		TextField IPAddress = createTextField("Host IP Address");
 		VBox IPAddressBox = new VBox(ipAddressLabel,IPAddress);
 		IPAddressBox.setMaxWidth(350);
 
