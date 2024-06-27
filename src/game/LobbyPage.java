@@ -143,7 +143,7 @@ public class LobbyPage extends StackPane {
 		return playerName + " ".repeat(maxNameLength-playerName.length());
 	}
 
-	public void onLeaveLeaveLobbyClicked(EventHandler<? super MouseEvent> e) {
+	public void onLeaveLobbyClicked(EventHandler<? super MouseEvent> e) {
 		this.leaveLobby.setOnMouseClicked(e);
 	}
 	public void setOnReadyClicked(EventHandler<ActionEvent> handler) {
@@ -173,7 +173,7 @@ public class LobbyPage extends StackPane {
 			System.out.println("should probably throw exception buddy. We can't find player in list view with matching name");
 		}
 	}
-
+	public ArrayList<Label> getJoinedPlayersList(){return this.joinedPlayersList;}
 
 
 }

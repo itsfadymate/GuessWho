@@ -3,6 +3,7 @@ package game;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,22 +11,33 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 
 public class CreateOrJoinPage extends StackPane {
 
-	public CreateOrJoinPage() throws Exception{
+	public CreateOrJoinPage(){
 		// TODO Auto-generated constructor stub
+		try {
 		ImageView bgImage  = new ImageView(new Image(getClass().getResourceAsStream("images/lobbyBg.png")));
 		bgImage.setPreserveRatio(true);
 		bgImage.setFitWidth(1360);
 		bgImage.setFitHeight(780);
 		this.getChildren().add(bgImage);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		Button joinLobby = createButton("Join Lobby");
 		Button createLobby = createButton("Create Lobby");
 		
-		joinLobby.setOnAction(e->{});
-		createLobby.setOnAction(e->{});
+		joinLobby.setOnAction(e->{
+			Stage s = (Stage)joinLobby.getScene().getWindow();
+			s.setScene(new Scene(new JoinLobbyPage()));
+		});
+		createLobby.setOnAction(e->{
+			Stage s = (Stage)joinLobby.getScene().getWindow();
+			s.setScene(new Scene(new CreateLobbyPage()));
+		});
 		
 		VBox buttonBox = new VBox(joinLobby,createLobby);
 		buttonBox.setAlignment(Pos.CENTER);

@@ -13,15 +13,15 @@ public class Tester extends Application {
 	public void start(Stage s) throws Exception {
 		// TODO Auto-generated method stub
 		try{
-			 ready = true;
+		/*	 ready = true;
 		LobbyPage root = new LobbyPage();
 		root.addPlayerToList("Fady");
 		root.addPlayerToList("Daniel");
 		root.setOnReadyClicked(e->{root.setPlayerReady("Fady", ready);
 		this.ready = !ready;
-		});
+		});*/
 		
-		s.setScene(new Scene(root));
+		s.setScene(new Scene(new CreateLobbyPage()));
 		s.setHeight(780);
 		s.setWidth(1360);
 		s.show();
