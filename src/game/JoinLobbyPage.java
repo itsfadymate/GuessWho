@@ -95,39 +95,28 @@ public class JoinLobbyPage extends BorderPane {
 
 	private void waitTillBothPlayersReady() {
 		//continuously read Host status
-//TODO:Handle when to interrupt the thread :')
+		//TODO:Handle when to interrupt the thread :')
 		Thread handleGameStatus = new Thread(()->{
 			long counter = 0;
 			while (this.socket.isConnected() && continueChecking ) {
-				
+
 				try {
 					counter++;
-					//checks do we change Host player status?
-					boolean oldValue = this.isHostReady; 
-					String msg = reader.readLine();
-					if (msg!=null)
-						this.isHostReady = msg.equals("true")? true: msg.equals("false")? false : this.isHostReady;
-					if (oldValue!=this.isHostReady) {
-						System.out.println(this.isHostReady? "host is now ready" : "host is now not ready");
-						Platform.runLater(()->{
-							this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(0).getText(), this.isHostReady);
-						});
-					}
-
-
-					//send out this player ready status
-					writer.write(isPlayer2Ready+"\n");
-					writer.flush();
-					
-					
+					exchangeReadyStatus();
+					/*
+					 * Bug: gameView is displayed only when host is ready first then the client
+					 * Fix: exchangeReadyStatus in a reversed order so it works in any order
+					 * I need to find a better solution tho and why this happens in the first place
+					 */
+					exchangeReadyStatusReverseOrder();
 					//checks do we start game?
 					if (isHostReady && isPlayer2Ready) {
 						continueChecking = false;
-						
-						
+
+
 						Platform.runLater(()->{
-						this.lobbyView.setUserMsg("Starting game");
-						//startGame here	
+							this.lobbyView.setUserMsg("Starting game");
+							//startGame here	
 							FXMLLoader loader = new FXMLLoader(getClass().getResource("player.fxml"));
 							Parent root;
 							try {
@@ -158,6 +147,45 @@ public class JoinLobbyPage extends BorderPane {
 			lobbyView.setPlayerReady(Name.getText(), isPlayer2Ready);
 		});
 
+
+	}
+
+	private void exchangeReadyStatus() throws IOException {
+		//checks do we change Host player status?
+		boolean oldValue = this.isHostReady; 
+		String msg = reader.readLine();
+		if (msg!=null)
+			this.isHostReady = msg.equals("true")? true: msg.equals("false")? false : this.isHostReady;
+		if (oldValue!=this.isHostReady) {
+			System.out.println(this.isHostReady? "host is now ready" : "host is now not ready");
+			Platform.runLater(()->{
+				this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(0).getText(), this.isHostReady);
+			});
+		}
+
+
+		//send out this player ready status
+		writer.write(isPlayer2Ready+"\n");
+		writer.flush();
+	}
+
+	private void exchangeReadyStatusReverseOrder() throws IOException {
+
+		//send out this player ready status
+		writer.write(isPlayer2Ready+"\n");
+		writer.flush();
+
+		//checks do we change Host player status?
+		boolean oldValue = this.isHostReady; 
+		String msg = reader.readLine();
+		if (msg!=null)
+			this.isHostReady = msg.equals("true")? true: msg.equals("false")? false : this.isHostReady;
+		if (oldValue!=this.isHostReady) {
+			System.out.println(this.isHostReady? "host is now ready" : "host is now not ready");
+			Platform.runLater(()->{
+				this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(0).getText(), this.isHostReady);
+			});
+		}
 
 	}
 

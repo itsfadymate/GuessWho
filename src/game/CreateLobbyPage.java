@@ -112,25 +112,13 @@ public class CreateLobbyPage extends StackPane {
 			while (this.socket.isConnected() && continueChecking ) {
 				counter++;
 				try {
-					//send this player ready status
-					writer.write(isHostReady+"\n");
-					writer.flush();
-					
-					
-					//check do we change client player status
-					boolean oldValue = this.isPlayer2Ready;
-					String msg = reader.readLine();
-					if (msg!=null)
-						this.isPlayer2Ready = msg.equals("true")? true: msg.equals("false")? false : this.isPlayer2Ready;
-					if (oldValue!=this.isPlayer2Ready) {
-						System.out.println(this.isPlayer2Ready? "client is now ready" : "client is now not ready");
-						Platform.runLater(()->{
-							this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(1).getText(), this.isPlayer2Ready);
-						});
-					}
-					
-					
-					
+					exchangeReadyStatus();
+					/*
+					 * Bug: gameView is displayed only when host is ready first then the client
+					 * Fix: exchangeReadyStatus in a reversed order so it works in any order
+					 * I need to find a better solution tho and why this happens in the first place
+					 */
+					exchangeReadyStatusReverseOrder();
 					//checks do we start game?
 					if (isHostReady && isPlayer2Ready) {
 						continueChecking = false;
@@ -167,6 +155,43 @@ public class CreateLobbyPage extends StackPane {
 			this.isHostReady=!isHostReady;
 			lobbyView.setPlayerReady(this.nickNameInput.getText(), this.isHostReady);
 		});
+	}
+	private void exchangeReadyStatus() throws IOException {
+		//send this player ready status
+		writer.write(isHostReady+"\n");
+		writer.flush();
+		
+		
+		//check do we change client player status
+		boolean oldValue = this.isPlayer2Ready;
+		String msg = reader.readLine();
+		if (msg!=null)
+			this.isPlayer2Ready = msg.equals("true")? true: msg.equals("false")? false : this.isPlayer2Ready;
+		if (oldValue!=this.isPlayer2Ready) {
+			System.out.println(this.isPlayer2Ready? "client is now ready" : "client is now not ready");
+			Platform.runLater(()->{
+				this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(1).getText(), this.isPlayer2Ready);
+			});
+		}
+	}
+	private void exchangeReadyStatusReverseOrder() throws IOException {
+		
+		//check do we change client player status
+		boolean oldValue = this.isPlayer2Ready;
+		String msg = reader.readLine();
+		if (msg!=null)
+			this.isPlayer2Ready = msg.equals("true")? true: msg.equals("false")? false : this.isPlayer2Ready;
+		if (oldValue!=this.isPlayer2Ready) {
+			System.out.println(this.isPlayer2Ready? "client is now ready" : "client is now not ready");
+			Platform.runLater(()->{
+				this.lobbyView.setPlayerReady(this.lobbyView.getJoinedPlayersList().get(1).getText(), this.isPlayer2Ready);
+			});
+		}
+		
+		//send this player ready status
+		writer.write(isHostReady+"\n");
+		writer.flush();
+				
 	}
 	private TextField createTextField(String promptText) {
 		TextField tf = new TextField();
