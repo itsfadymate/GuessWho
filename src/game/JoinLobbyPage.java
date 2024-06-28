@@ -17,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -40,6 +42,7 @@ public class JoinLobbyPage extends BorderPane {
 		this.continueChecking = true;
 
 		this.setPrefSize(1360, 780);
+		ImageView pageTitle = new ImageView(new Image(getClass().getResourceAsStream("images/joinLobbyTitle.png")));
 		StackPane s1 = new StackPane();
 		StackPane s2 = new StackPane();
 		s1.prefWidth(240);
@@ -86,7 +89,7 @@ public class JoinLobbyPage extends BorderPane {
 				e1.printStackTrace();
 			}
 		});
-		VBox txtBox = new VBox(nameBox,IPAddressBox,submit);
+		VBox txtBox = new VBox(pageTitle,nameBox,IPAddressBox,submit);
 		txtBox.setMaxWidth(350);
 		txtBox.setAlignment(Pos.CENTER);
 		txtBox.setSpacing(80);

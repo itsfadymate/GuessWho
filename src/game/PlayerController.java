@@ -21,6 +21,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -90,7 +92,8 @@ public class PlayerController {
 	Button sendButton;
 	@FXML
 	AnchorPane root;
-
+	@FXML 
+	ImageView instructorWoman;
 	
 
 	private Player p1;
@@ -106,6 +109,11 @@ public class PlayerController {
 	
 	
 	public void initialize(Socket socket) {
+		this.textField.addEventFilter(KeyEvent.KEY_PRESSED, e->{
+			if (e.getCode()==KeyCode.ENTER) {
+				sendMessage();
+			}
+		});
 		this.isGuessing = false;
 		this.isMuted = false;
 		this.cards = new ImageView[]
@@ -140,10 +148,13 @@ public class PlayerController {
 	}
 	private void playExplanationAnimation() {
 		//TODO: should add an image of a woman telling you to pick a card
+		this.instructorWoman.setVisible(true);
+		this.instructorWoman.setLayoutX(950);
+		this.instructorWoman.setLayoutY(300);
+		this.chatHider.setVisible(true);
 		this.chatHider.setOpacity(0.58);
 		this.chatHider.setOpacity(0.58);
 		this.sendButton.setDisable(true);
-		this.cardPointer.toFront();
 		this.cardPointer.setVisible(true);
 		this.cardPointer.setLayoutX(870);
 		this.cardPointer.setLayoutY(500);
@@ -208,6 +219,7 @@ public class PlayerController {
 				System.out.println("picked card: " + finalI);
 				this.pickedCard.setImage(cards[finalI].getImage());
 				this.animatePointer.stop();
+				this.instructorWoman.setVisible(false);
 				this.cardPointer.setVisible(false);
 				this.chatHider.setVisible(false);
 				this.sendButton.setDisable(false);

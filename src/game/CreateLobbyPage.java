@@ -50,7 +50,7 @@ public class CreateLobbyPage extends StackPane {
 		this.getChildren().add(bgView);
 		
 		//Title Image
-		Image titleImage = new Image(this.getClass().getResourceAsStream("images/lobbyTitle.png"));
+		Image titleImage = new Image(this.getClass().getResourceAsStream("images/createLobbyTitle.png"));
 		ImageView titleView = new ImageView(titleImage);
 		StackPane titleContainer = new StackPane(titleView);
 		titleContainer.setAlignment(Pos.CENTER);
