@@ -10,25 +10,33 @@ import java.util.ResourceBundle;
 
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
+//TODO:validate picking card process to avoid loopholes
 
 public class PlayerController {
+	
 
 	@FXML
 	ImageView card1;
@@ -70,6 +78,20 @@ public class PlayerController {
 	ImageView pickedCard;
 	@FXML 
 	GridPane gridPane;
+	@FXML
+	Rectangle cardsDimmer;
+	@FXML
+	Rectangle chatHider;
+	@FXML
+	Button muteButton;
+	@FXML
+	ImageView cardPointer;
+	@FXML
+	Button sendButton;
+	@FXML
+	AnchorPane root;
+
+	
 
 	private Player p1;
 	private ImageView[] cards;
@@ -78,9 +100,14 @@ public class PlayerController {
 	private final int maximumTries = 3;
 	private int numberOfGuesses;
 	private boolean isGuessing;
+	private boolean isMuted;
 	private ScaleTransition[] transitions;
+	private TranslateTransition animatePointer;
+	
+	
 	public void initialize(Socket socket) {
 		this.isGuessing = false;
+		this.isMuted = false;
 		this.cards = new ImageView[]
 				{card1,card2,card3,card4,card5,
 						card6,card7,card8,card9,card10,
@@ -106,11 +133,30 @@ public class PlayerController {
 
 
 	private void pickCard() {
+		playExplanationAnimation();
 		ScaleTransition[] transition = animateCards();
 		setPickOnClick(transition);
 		
 	}
-
+	private void playExplanationAnimation() {
+		//TODO: should add an image of a woman telling you to pick a card
+		this.chatHider.setOpacity(0.58);
+		this.chatHider.setOpacity(0.58);
+		this.sendButton.setDisable(true);
+		this.cardPointer.toFront();
+		this.cardPointer.setVisible(true);
+		this.cardPointer.setLayoutX(870);
+		this.cardPointer.setLayoutY(500);
+	    animatePointer = new TranslateTransition();
+		animatePointer.setNode(this.cardPointer);
+		animatePointer.setByX(-50);
+		animatePointer.setByY(-50);
+		animatePointer.setDuration(Duration.millis(300));
+		animatePointer.setAutoReverse(true);
+		animatePointer.setCycleCount(TranslateTransition.INDEFINITE);
+		animatePointer.play();
+		
+	}
 
 	private void initializeFlipImages() {
 		for (int i=0;i<flipImages.length;i++) {
@@ -161,6 +207,10 @@ public class PlayerController {
 				p1.sendMsg(""+finalI, true);
 				System.out.println("picked card: " + finalI);
 				this.pickedCard.setImage(cards[finalI].getImage());
+				this.animatePointer.stop();
+				this.cardPointer.setVisible(false);
+				this.chatHider.setVisible(false);
+				this.sendButton.setDisable(false);
 				this.setFlipOnClick();
 			});
 		}
@@ -191,7 +241,7 @@ public class PlayerController {
 		return transition;
 	}
 	public void makeAGuess() {
-		this.isGuessing=!this.isGuessing;
+		
 		if (isGuessing) {
 			if (transitions!=null)
 				Arrays.stream(transitions).forEach(transition->transition.stop());
@@ -201,6 +251,7 @@ public class PlayerController {
 			 transitions = animateCards();
 			setGuessOnClick(transitions);
 		}
+		this.isGuessing=!this.isGuessing;
 	}
 
 	private static boolean showingPickedCard = false;
@@ -216,7 +267,16 @@ public class PlayerController {
 		}
 	}
 	public void leaveGame(){}
-	public void toggleSound() {}
+	public void toggleSound() {
+		this.isMuted =!this.isMuted;
+		if (isMuted) {
+			((ImageView)this.muteButton.getGraphic()).setImage(new Image(getClass().getResourceAsStream("images/muteIcon.png")));
+		}else {
+			((ImageView)this.muteButton.getGraphic()).setImage(new Image(getClass().getResourceAsStream("images/soundIcon.png")));
+		}
+		
+	}
+	
 	public void sendMessage() {
 		if(!textField.getText().isEmpty()) {
 			String msg = textField.getText();
@@ -243,7 +303,6 @@ public class PlayerController {
 	}
 
 
-	
 
 
 	

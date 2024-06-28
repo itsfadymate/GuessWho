@@ -1,0 +1,37 @@
+#guessButton{
+	-fx-background-color: #00EE00;
+	
+}
+#guessButton:hover{
+	-fx-background-color: #00FF00;
+}
+
+
+#showCardButton{
+	-fx-background-color: #E0EE00;
+	
+}
+#showCardButton:hover{
+	-fx-background-color: #F0FF00;
+	
+}
+
+
+#leaveButton{
+	-fx-background-color: #DD0000;
+}
+#leaveButton:hover{
+	-fx-background-color: #FF0000;
+}
+
+#muteButton{
+	-fx-background-color:  #55EE00;
+}
+#muteButton:hover{
+	-fx-background-color:  #55FF00;
+}
+
+
+.gameButton{
+	-fx-background-radius:  40;
+}

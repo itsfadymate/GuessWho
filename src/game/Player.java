@@ -55,14 +55,16 @@ public class Player {
 			}
 			while (socket.isConnected()) {
 				try {
-					String msg = reader.readLine();
+					
+						String msg = reader.readLine();
+					
 				    if (msg.charAt(0)=='T') 
 				    	this.foePickedCardValue = Integer.parseInt(msg.substring(1));
 				    else
 				    	PlayerController.addMessage(msg.substring(1), vbox,false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					break;
 				}
 			}
 		}).start();
