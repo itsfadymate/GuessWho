@@ -10,8 +10,11 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class Player {
@@ -45,7 +48,7 @@ public class Player {
 		}
 	}
 
-	public void listenForIncomingMessages(VBox vbox) {
+	public void listenForIncomingMessages(VBox vbox,Label endMsg,StackPane popUp,HBox gameContainer) {
 		new Thread(()->{
 			try {
 				reader.readLine();
@@ -60,8 +63,13 @@ public class Player {
 					
 				    if (msg.charAt(0)=='T') 
 				    	this.foePickedCardValue = Integer.parseInt(msg.substring(1));
-				    else
+				    else if (msg.charAt(0)=='F')
 				    	PlayerController.addMessage(msg.substring(1), vbox,false);
+				    else if (msg.charAt(0)=='L') {
+				    	PlayerController.handleLoss("Your opponent guessed correctly",endMsg,popUp,gameContainer);
+				    }else if (msg.charAt(0)=='E') {
+				    	PlayerController.handleOpponentleft(msg.substring(1));
+				    }
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					break;
@@ -71,8 +79,8 @@ public class Player {
 
 	}
 
-	public void sendMsg(String text,boolean containsPickedCardInfo) {
-		text = containsPickedCardInfo? "T"+ text : "F"+text;
+	public void sendMsg(String text,MsgType type) {
+		text = type==MsgType.cardInfo? "T"+ text :type==MsgType.chatMsg? "F"+text:type==MsgType.playerDisconnected? "E" + text: "L";
 		try {
 			writer.write(text);
 			writer.newLine();

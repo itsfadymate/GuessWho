@@ -12,21 +12,32 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -34,6 +45,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 //TODO:validate picking card process to avoid loopholes
 
@@ -94,6 +106,12 @@ public class PlayerController {
 	AnchorPane root;
 	@FXML 
 	ImageView instructorWoman;
+	@FXML
+	StackPane popUp;
+	@FXML
+	Label endMsg;
+	@FXML
+	HBox gameContainer;
 	
 
 	private Player p1;
@@ -134,7 +152,7 @@ public class PlayerController {
 		msgVBox.heightProperty().addListener((a,b,newBoxHeight)->{
 			scrollPane.setVvalue((Double)newBoxHeight);
 		});
-		p1.listenForIncomingMessages(msgVBox);
+		p1.listenForIncomingMessages(msgVBox,this.endMsg,this.popUp,this.gameContainer);
 		pickCard();
 		
 	}
@@ -174,6 +192,7 @@ public class PlayerController {
 			flipImages[i] = new Image(this.getClass().getResourceAsStream("images/flippedCard.png"));
 		}	
 	}
+	//TODO: test leave button, test guessing functionality
 	private void initializeDisplayImages() {
 		for (int i=0;i<this.displayImages.length;i++) {
 			this.displayImages[i] = this.cards[i].getImage();
@@ -184,13 +203,16 @@ public class PlayerController {
 		for (int i=0;i<cards.length;i++) {
 			final int finalI = i;
 			cards[i].setOnMouseClicked(e->{
+				System.out.println("guessed card number: " + finalI + " number of guesses is "+ (numberOfGuesses+1));
 				Arrays.stream(transitions).forEach(transition->transition.stop());
 				Arrays.stream(cards).forEach(c-> {c.setScaleX(1);c.setScaleY(1);c.setScaleZ(1);});
 				
 				if (finalI==p1.getFoePickedCardValue()) {
+					System.out.println("guessed correctly");
 					handleWin();
 				}else if (numberOfGuesses++ > maximumTries) {
-					handleLoss();
+					System.out.println("exceeded number of guesses");
+					handleLoss("you exceeded the number of allowed tries.\n You lost!!",this.endMsg,this.popUp,this.gameContainer);
 					return;
 				}
 				setFlipOnClick();
@@ -215,7 +237,7 @@ public class PlayerController {
 			cards[i].setOnMouseClicked(e->{
 				Arrays.stream(transitions).forEach(transition->transition.stop());
 				Arrays.stream(cards).forEach(c-> {c.setScaleX(1);c.setScaleY(1);c.setScaleZ(1);});
-				p1.sendMsg(""+finalI, true);
+				p1.sendMsg(""+finalI, MsgType.cardInfo);
 				System.out.println("picked card: " + finalI);
 				this.pickedCard.setImage(cards[finalI].getImage());
 				this.animatePointer.stop();
@@ -229,12 +251,24 @@ public class PlayerController {
 		
 		
 	}
-	private void handleLoss() {
-		// TODO Auto-generated method stub
+	public static void handleLoss(String msg,Label endMsg,StackPane popUp,HBox gameContainer) {
+		endMsg.setText(msg);
+		popUp.setVisible(true);
+		gameContainer.setEffect(new GaussianBlur());
+		
 
 	}
-	private void handleWin() {
-		// TODO Auto-generated method stub
+	public static void handleOpponentleft(String msg) {
+		System.out.println("opponent left");
+		Alert a = new Alert(AlertType.ERROR);
+		a.setContentText(msg);
+		a.setTitle("opponent left");
+		a.show();
+	}
+    private void handleWin() {
+		popUp.setVisible(true);
+		this.gameContainer.setEffect(new GaussianBlur());
+		this.p1.sendMsg("", MsgType.playerWon);
 
 	}
 	private ScaleTransition[] animateCards() {
@@ -265,7 +299,7 @@ public class PlayerController {
 		}
 		this.isGuessing=!this.isGuessing;
 	}
-
+	
 	private static boolean showingPickedCard = false;
 	public void showPickedCard(){
 		if (showingPickedCard) {
@@ -278,7 +312,22 @@ public class PlayerController {
 			showingPickedCard = true;
 		}
 	}
-	public void leaveGame(){}
+	public void leaveGame(ActionEvent e){
+		
+		try {
+			FXMLLoader loader = new FXMLLoader(PlayerController.class.getResource("mainMenu.fxml"));
+			Parent root = loader.load();
+		   Stage s = (Stage)(((Button)e.getSource()).getScene().getWindow());
+		   s.setScene(new Scene(root));
+		   p1.sendMsg("opponent left the game",MsgType.playerDisconnected );
+		}catch (Exception exc) {
+			Alert a = new Alert(AlertType.ERROR);
+			a.setContentText("there was a problem switching to main menu pls exit the game and reopen");
+			a.setTitle("Problemo");
+			a.show();
+			exc.printStackTrace();
+		}
+	}
 	public void toggleSound() {
 		this.isMuted =!this.isMuted;
 		if (isMuted) {
@@ -294,7 +343,7 @@ public class PlayerController {
 			String msg = textField.getText();
 			addMessage(msg,msgVBox,true);
 			this.textField.setText("");
-			p1.sendMsg(msg,false);
+			p1.sendMsg(msg,MsgType.chatMsg);
 		
 		}
 	}
