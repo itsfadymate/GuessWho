@@ -20,14 +20,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class CreateLobbyPage extends StackPane {
+	private static final String BG_IMAGE_PATH = "images/questionMarkTexture1.png";
 	private LobbyPage lobbyView;
 	private boolean isHostReady;
 	private boolean isPlayer2Ready;
@@ -43,11 +50,19 @@ public class CreateLobbyPage extends StackPane {
 		this.isHostReady = false;
 		
 		//backgroundImage
-		Image bgImage = new Image(this.getClass().getResourceAsStream("images/lobbyBg.png"));
+		/*Image bgImage = new Image(this.getClass().getResourceAsStream("images/lobbyBg.png"));
 		ImageView bgView = new ImageView(bgImage);
 		bgView.setPreserveRatio(true);
 		bgView.setFitWidth(1360);
-		this.getChildren().add(bgView);
+		this.getChildren().add(bgView);*/
+		Image bgImage = new Image(getClass().getResourceAsStream(BG_IMAGE_PATH));
+		BackgroundImage bgI = new BackgroundImage(bgImage,
+				BackgroundRepeat.REPEAT,
+				BackgroundRepeat.NO_REPEAT,
+				BackgroundPosition.CENTER,
+				BackgroundSize.DEFAULT);
+		Background bg = new Background(bgI);
+		this.setBackground(bg);
 		
 		//Title Image
 		Image titleImage = new Image(this.getClass().getResourceAsStream("images/createLobbyTitle.png"));
@@ -71,6 +86,15 @@ public class CreateLobbyPage extends StackPane {
 			
 			this.lobbyView = new LobbyPage();
 			lobbyView.addPlayerToList(nickNameInput.getText());
+			lobbyView.onLeaveLobbyClicked(l->{ //wholy unfinished and need to be implemented in joinLobby
+				Stage s = (Stage)createLobby.getScene().getWindow();
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("mainMenu.fxml"));
+				try {
+					s.setScene(loader.load());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			});
 			
 			Stage stage = (Stage)createLobby.getScene().getWindow();
 			stage.setScene(new Scene(lobbyView));
@@ -240,6 +264,7 @@ public class CreateLobbyPage extends StackPane {
 	private Label createLabel(String string) {
 		// TODO Auto-generated method stub
 		Label l = new Label(string);
+		l.setTextFill(Color.YELLOW);
 		l.setFont(Font.font("badoni MT",FontWeight.BOLD,40));
 		return l;
 	}

@@ -7,6 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -16,14 +21,25 @@ import javafx.stage.Stage;
 
 public class CreateOrJoinPage extends StackPane {
 
+	private static final String BG_IMAGE_PATH = "images/questionmarkTexture3.jpg";
+
 	public CreateOrJoinPage(){
 		// TODO Auto-generated constructor stub
 		try {
-		ImageView bgImage  = new ImageView(new Image(getClass().getResourceAsStream("images/lobbyBg.png")));
+		/*ImageView bgImage  = new ImageView(new Image(getClass().getResourceAsStream("images/lobbyBg.png")));
 		bgImage.setPreserveRatio(true);
 		bgImage.setFitWidth(1360);
 		bgImage.setFitHeight(780);
-		this.getChildren().add(bgImage);
+		this.getChildren().add(bgImage);*/
+			
+			Image bgImage = new Image(getClass().getResourceAsStream(BG_IMAGE_PATH));
+			BackgroundImage bgI = new BackgroundImage(bgImage,
+					BackgroundRepeat.REPEAT,
+					BackgroundRepeat.REPEAT,
+					BackgroundPosition.CENTER,
+					BackgroundSize.DEFAULT);
+			Background bg = new Background(bgI);
+			this.setBackground(bg);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -149,6 +149,7 @@ public class PlayerController {
 		this.p1 = new Player(socket);
 		msgVBox.setPadding(new Insets(10,10,10,10));
 		msgVBox.setSpacing(20);
+		msgVBox.setOpacity(1.0);
 		msgVBox.heightProperty().addListener((a,b,newBoxHeight)->{
 			scrollPane.setVvalue((Double)newBoxHeight);
 		});

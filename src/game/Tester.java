@@ -1,6 +1,7 @@
 package game;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -20,8 +21,9 @@ public class Tester extends Application {
 		root.setOnReadyClicked(e->{root.setPlayerReady("Fady", ready);
 		this.ready = !ready;
 		});*/
+		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("player.fxml"));
 		
-		s.setScene(new Scene(new CreateLobbyPage()));
+		s.setScene(new Scene(loader.load()));
 		s.setHeight(780);
 		s.setWidth(1360);
 		s.show();

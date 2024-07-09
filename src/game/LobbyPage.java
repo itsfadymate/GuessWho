@@ -17,6 +17,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -27,6 +32,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 public class LobbyPage extends StackPane {
+	private static final String BG_IMAGE_PATH = "images/questionMarkTexture1.png";
 	private Label userMsg;
 	private Button leaveLobby;
 	private Button ready;
@@ -37,8 +43,14 @@ public class LobbyPage extends StackPane {
 
 	public LobbyPage() {
 		
-		//ImageView bgImage = new ImageView(new Image(getClass().getResourceAsStream("")));
-		//this.getChildren().add(bgImage);
+		Image bgImage = new Image(getClass().getResourceAsStream(BG_IMAGE_PATH));
+		BackgroundImage bgI = new BackgroundImage(bgImage,
+				BackgroundRepeat.REPEAT,
+				BackgroundRepeat.NO_REPEAT,
+				BackgroundPosition.CENTER,
+				BackgroundSize.DEFAULT);
+		Background bg = new Background(bgI);
+		this.setBackground(bg);
 		ImageView titleImg = new ImageView(new Image(getClass().getResourceAsStream("images/lobbyTitle.png")));
 		 joinedPlayers = new ListView<Label>();
 		
@@ -120,6 +132,7 @@ public class LobbyPage extends StackPane {
 	
 	public Label setUserMsg(String msg) {
 		userMsg.setText(msg);
+		userMsg.setTextFill(Color.LIGHTGOLDENRODYELLOW);
 		userMsg.setWrapText(true);
 		userMsg.setFont(Font.font("badoni MT",FontWeight.BOLD,50));
 		playAnimatedMsg(userMsg);

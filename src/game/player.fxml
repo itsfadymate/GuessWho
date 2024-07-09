@@ -130,6 +130,11 @@
             </StackPane>
             <StackPane prefHeight="780.0" prefWidth="602.0">
                <children>
+                  <ImageView fitHeight="564.0" fitWidth="574.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@images/questionmarkTexture3.jpg" />
+                     </image>
+                  </ImageView>
                   <VBox prefHeight="780.0" prefWidth="526.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="177.0" prefWidth="607.0" spacing="10.0" style="-fx-background-color: #FFFFFF;">
@@ -165,7 +170,7 @@
                         </HBox>
                         <ScrollPane fx:id="scrollPane" prefHeight="565.0" prefWidth="564.0">
                            <content>
-                              <VBox fx:id="msgVBox" alignment="TOP_CENTER" prefHeight="515.0" prefWidth="583.0" spacing="20.0" style="-fx-background-color: #FFFFFF;" />
+                              <VBox fx:id="msgVBox" alignment="TOP_CENTER" depthTest="DISABLE" prefHeight="515.0" prefWidth="583.0" spacing="20.0" style="-fx-background-color: #FFFFFF;" />
                            </content>
                         </ScrollPane>
                         <HBox alignment="CENTER" prefHeight="138.0" prefWidth="595.0">

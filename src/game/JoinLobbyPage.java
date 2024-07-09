@@ -19,9 +19,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -36,11 +43,20 @@ public class JoinLobbyPage extends BorderPane {
 	private Socket socket;
 	private TextField Name;
 	private boolean continueChecking;
-
+	private static final String BG_IMAGE_PATH ="images/questionmarkTexture2.png";
 	public JoinLobbyPage() {
 		//Related to thread reading host status in method waitTillBothPlayersReady
 		this.continueChecking = true;
-
+		Image bgImage = new Image(getClass().getResourceAsStream(BG_IMAGE_PATH));
+		BackgroundImage bgI = new BackgroundImage(bgImage,
+				BackgroundRepeat.REPEAT,
+				BackgroundRepeat.NO_REPEAT,
+				BackgroundPosition.CENTER,
+				BackgroundSize.DEFAULT);
+		Background bg = new Background(bgI);
+		this.setBackground(bg);
+		
+		
 		this.setPrefSize(1360, 780);
 		ImageView pageTitle = new ImageView(new Image(getClass().getResourceAsStream("images/joinLobbyTitle.png")));
 		StackPane s1 = new StackPane();
@@ -194,7 +210,11 @@ public class JoinLobbyPage extends BorderPane {
 
 	private Label createLabel(String string) {
 		Label l = new Label(string);
-		l.setFont(Font.font("badoni MT",FontWeight.BOLD,20));
+		l.setFont(Font.font("segoe UI",FontWeight.BOLD,20));
+		l.setTextFill(Color.YELLOW);
+		l.setScaleX(1.4);
+		l.setScaleY(1.4);
+		
 		return l;
 	}
 
